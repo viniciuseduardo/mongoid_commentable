@@ -24,13 +24,13 @@ class CommentsController < ActionController::Base
 
   def create
     @comment = @model.comments.new(params[:comment])
-    flash[:notice] = 'Comment was successfully created.' if @comment.save
-    respond_with(@comment)
+    @comment.save
+    respond_with([@model, @comment])
   end
 
   def update
-    flash[:notice] = 'Comment was successfully updated.' if @comment.update_attributes(params[:comment])
-    respond_with(@comment)
+    @comment.update_attributes(params[:comment])
+    respond_with([@model, @comment])
   end
 
   def destroy
