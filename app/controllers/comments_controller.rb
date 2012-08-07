@@ -3,7 +3,7 @@ class CommentsController < ActionController::Base
   prepend_before_filter :get_model
   before_filter :get_comment, :only => [:show, :edit, :update]
 
-  respond_to :html
+  respond_to :html, :json, :js, :xml
   
   def index
     @comments = @model.comments
@@ -23,22 +23,14 @@ class CommentsController < ActionController::Base
   end
 
   def create
-    @comment = @model.create_comment!(params[:comment])
-    if @comment.save
-      flash[:notice] = 'Comment was successfully created.'
-    else
-      flash[:error] = 'Comment wasn\'t created.'
-    end
-    respond_with(@model)
+    @comment = @model.comments.new(params[:comment])
+    flash[:notice] = 'Comment was successfully created.' if @comment.save
+    respond_with(@comment)
   end
 
   def update
-    if @comment.update_attributes(params[:comment])
-      flash[:notice] = 'Comment was successfully updated.'
-    else
-      flash[:error] = 'Comment wasn\'t deleted.'
-    end
-    respond_with([@model,@comment], :location => @model)
+    flash[:notice] = 'Comment was successfully updated.' if @comment.update_attributes(params[:comment])
+    respond_with(@comment)
   end
 
   def destroy
