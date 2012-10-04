@@ -3,14 +3,13 @@ require 'spec_helper'
 describe Mongoid::Commentable do
   
   describe Comment do
-   
     context 'creating new comment' do 
       subject {CommentableModel.new.create_comment!(:author => 'Author', :text => 'test') }
       its(:class){should == Comment} 
       its(:author){should == 'Author'} 
       its(:text){should == 'test'}
       specify{subject.path.should == "root.#{subject.id}"}
-   end
+    end
 
     context 'replying to a comment' do
       before do

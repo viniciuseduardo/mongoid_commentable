@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 $:.unshift(File.join(File.dirname(__FILE__),'..','lib'))
 $:.unshift(File.join(File.dirname(__FILE__),'models'))
 require 'mongoid'
@@ -10,7 +13,6 @@ require 'database_cleaner'
 require 'mongoid_commentable'
 require 'models/comment'
 require 'models/commentable_model'
-
 
 RSpec.configure do |config|
   config.mock_with :rr
@@ -25,6 +27,5 @@ RSpec.configure do |config|
 end
 
 Mongoid.configure do |config|
-  config.master = Mongo::Connection.new.db("mongoid_commentable_test")
+  config.connect_to("mongoid_commentable_test")
 end
-

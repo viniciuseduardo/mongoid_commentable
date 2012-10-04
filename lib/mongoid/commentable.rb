@@ -2,7 +2,7 @@ module Mongoid::Commentable
   extend ActiveSupport::Concern
   included do |base|
     base.embeds_many :comments, :as => :commentable
-    base.index [['comments', Mongo::ASCENDING]]
+    base.index 'comments' => 1
   end
     
   module ClassMethods
@@ -13,7 +13,7 @@ module Mongoid::Commentable
   end
     
   def create_comment!(params)
-    comment = comments.create!(params)
+    comment = comments.build(params)
     comment.path = comment.parent ? comments.find(comment.parent).path + '.' + comment.id.to_s : "root."+comment.id.to_s
     comment
   end
